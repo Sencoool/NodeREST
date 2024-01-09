@@ -1,6 +1,8 @@
-// IaaS Infrastructure as a service
-// PaaS Platform as a service
-// SaaS Software as a service 
+// SQLite3 CRUD operations
+// npm install sqlite3
+// Create a Book.sqlite file in Database folder
+// Run this file with node CRUDBookSQLite.js
+// Test with Postman
 
 const express = require('express');
 const sqlite3 = require('sqlite3');
