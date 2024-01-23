@@ -4,6 +4,7 @@ function capToFront(str){
     let ans = ""
     for(let i = 0; i < str.length; i++){
         if(str[i] == str[i].toUpperCase()){
+            console.log(str[i] + " and " + str[i].toUpperCase());
             upper += str[i]
         }
         else if(str[i] == str[i].toLowerCase()){
