@@ -1,5 +1,8 @@
 function numberSplit(nums){
-    return[Math.floor(nums / 2),Math.ceil(nums / 2)];
+    spilt = []
+    spilt.push(Math.floor(nums / 2))
+    spilt.push(Math.ceil(nums / 2))
+    return spilt
 }
 
 console.log(numberSplit(4));

@@ -1,5 +1,9 @@
 function getBudgets(person){
-    
+    var summary = 0
+    for(let i in person){
+        summary += person[i].budget
+    }
+    return summary
 }
 
 console.log(getBudgets([
