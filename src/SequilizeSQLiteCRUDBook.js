@@ -22,8 +22,8 @@ const sequelize = new Sequelize('database','username','password', {
 const Book = sequelize.define('book',{
     id: {
         type: Sequelize.INTEGER,
-        autoIncrement: true,
-        primaryKey: true
+        autoIncrement: true, // increase value auto
+        primaryKey: true //PK
     },
     title: {
         type: Sequelize.STRING,
@@ -36,12 +36,12 @@ const Book = sequelize.define('book',{
 });
 
 // create the books table if it doesn't exist
-sequelize.sync();
+sequelize.sync(); //CREATE TABLE IF NOT EXISTS
 
 // route to get all books
 app.get('/books',(req,res) => {
-    Book.findAll().then(books => {
-        res.json(books);
+    Book.findAll().then(books => { // same with Select * from but command here is Sequelize builtin
+        res.json(books); //.then async await
     }).catch(err => {
         res.status(500).send(err);
     });
@@ -71,7 +71,7 @@ app.post('/books',(req, res) => {
 
 // route to update a book
 app.put('/books/:id', (req, res) => {
-    Book.findByPk(req.params.id).then(book => {
+    Book.findByPk(req.params.id).then(book => { //Checking ID
         if (!book){ 
             res.status(404).send('Book not found');
         } else {
