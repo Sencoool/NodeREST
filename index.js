@@ -10,7 +10,7 @@ const bodyParser = require("body-parser")
 
 // Database connection
 mongoose.connect(
-    "mongodb://admin:DAEymy19863@node58301-jiramet-noderest.proen.app.ruk-com.cloud",
+    "mongodb://admin:DAEymy19863@node58301-jiramet-noderest.proen.app.ruk-com.cloud", // local need port num clout don't need
     {
         useNewUrlParser: true,
         useUnifiedTopology: true, //Defauct setting mongoDB
