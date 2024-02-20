@@ -93,7 +93,7 @@ app.delete("/books/:id", async (req, res) => {
 });
 
 // Start the server
-const PORT = PerformanceObserverEntryList.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server started at http://localhost:${PORT}`);
 })
