@@ -1,116 +1,99 @@
-// Description: Node Express REST API with Sequelize and SQLite CRUD Book
-// npm install express sequelize sqlite3
-// Run tihs file with node SequlizeSQLiteCRUDBook.js
+// Description: REST API with MongoDB
+// npm install express mongoose body-parser
+// Run this file with node MongoDBREST.js
 // Test with Postman
-// ORM = Object relational mapping/management give order ORM translate to SQL
-// Mongo has no relation
-const express = require('express');
-const Sequelize = require('sequelize');
-const app = express();
+// NoSQL No table Relation
 
-// parse incoming requests
-app.use(express.json());
+const express = require("express");
+const mongoose = require("mongoose"); //object use to access mongoDB
+const bodyParser = require("body-parser")
 
-// set db url
+// Database connection
+mongoose.connect(
+    "mongodb://admin:DAEymy19863@node58301-jiramet-noderest.proen.app.ruk-com.cloud:11784",
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true, //Defauct setting mongoDB
+    }
+);
 
-const dbUrl = 'postgres://webadmin:GPVoif99220@node58302-jiramet-noderest.proen.app.ruk-com.cloud:5432/Books'
-
-// create a connextion to the database
-
-const sequelize = new Sequelize(dbUrl);
-
-// create a connection to the database
-// const sequelize = new Sequelize('database','username','password', {
-//     host: 'localhost',
-//     dialect: 'sqlite',
-//     storage: './Database/SQBooks.sqlite'
-// });
-
-// define the Book model
-const Book = sequelize.define('book',{
+const Book = mongoose.model("Book", { // Mongo not call table but called collections instead
     id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true, // increase value auto
-        primaryKey: true //PK
+        type: Number,
+        unique: true, // Ensure uniqueness of the "id" field
+        required: true, // If you want "id" to be required
     },
-    title: {
-        type: Sequelize.STRING,
-        allowNull: false
-    },
-    author: {
-        type: Sequelize.STRING,
-        allowNull: false
+    title: String,
+    author: String,
+});
+
+const app = express();
+app.use(bodyParser.json());
+
+// Create
+app.post("/books", async (req, res) => {
+    try {
+        // Get the last book record to determine the next ID
+        const lastBook = await Book.findOne().sort({ id: -1});
+        const nextID = lastBook ? lastBook.id + 1 : 1; //ternary operation of JS
+
+        // Create a new book with the next ID
+        const book = new Book ({
+            id : nextID, // Set the custom "id" field
+            ...req.body, // Include other book data from the request body
+        });
+
+        await book.save();
+        res.send(book);
+    } catch (error) {
+        res.status(500).send(error);
     }
 });
 
-// create the books table if it doesn't exist
-sequelize.sync(); //CREATE TABLE IF NOT EXISTS
-
-// route to get all books
-app.get('/books',(req,res) => {
-    Book.findAll().then(books => { // same with Select * from but command here is Sequelize builtin
-        res.json(books); //.then async await
-    }).catch(err => {
-        res.status(500).send(err);
-    });
+// Read all
+app.get("/books", async (req, res) => {
+    try {
+        const books = await Book.find(); //find all
+        res.send(books);
+    } catch (error) {
+        res.status(500).send(error);
+    }
 });
 
-// route to get a book by id
-app.get('/books/:id', (req,res) => {
-    Book.findByPk(req.params.id).then(book => {
-        if (!book){
-            res.status(404).send('Book not found');
-        } else {
-            res.json(book);
-        }
-    }).catch(err => {
-        res.status(500).send(err);
-    });
-});
-
-// route to create a new book
-app.post('/books',(req, res) => {
-    Book.create(req.body).then(book => {
+// Read one
+app.get("/books/:id", async (req, res) => {
+    try {
+        const book = await Book.findOne({id:req.params.id}); // find one
         res.send(book);
-    }).catch(err => {
-        res.status(500).send(err);
-    });
+    } catch (error){
+        res.status(500).send(error);
+    }
 });
 
-// route to update a book
-app.put('/books/:id', (req, res) => {
-    Book.findByPk(req.params.id).then(book => { //Checking ID
-        if (!book){ 
-            res.status(404).send('Book not found');
-        } else {
-            book.update(req.body).then(() => {
-                res.send(book);
-            }).catch(err => {
-                res.status(500).send(err);
-            });
-        }
-    }).catch(err => {
-        res.status(500).send(err);
-    });
+// Update
+app.put("/books/:id", async (req, res) => {
+    try {
+        const book = await Book.findOneAndUpdate({id:req.params.id}, req.body, {
+            new: true,
+        });
+        res.send(book);
+    } catch (error){
+        res.status(500).send(error);
+    }
 });
 
-// route to delete a book
-app.delete('/books/:id', (req, res) => {
-    Book.findByPk(req.params.id).then(book => {
-        if (!book) {
-            res.status(404).send('Book not found');
-        } else {
-            book.destroy().then(() => {
-                res.send({});
-            }).catch(err => {
-                res.status(500).send(err);
-            });
-        }
-    }).catch(err => {
-        res.status(500).send(err);
-    });
+// Delete
+app.delete("/books/:id", async (req, res) => {
+    try {
+        const book = await Book.findOneAndDelete({id:req.params.id});
+        res.send(book);
+    } catch (error) {
+        res.status(500).send(error);
+    }
 });
 
-// start the server
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+// Start the server
+const PORT = PerformanceObserverEntryList.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server started at http://localhost:${PORT}`);
+})

@@ -5,19 +5,19 @@
 // NoSQL No table Relation
 
 const express = require("express");
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"); //object use to access mongoDB
 const bodyParser = require("body-parser")
 
 // Database connection
 mongoose.connect(
-    "mongodb://admin:DAEymy19863@node",
+    "mongodb://admin:DAEymy19863@node58301-jiramet-noderest.proen.app.ruk-com.cloud:11784",
     {
         useNewUrlParser: true,
-        useUnifiedTopology: true,
+        useUnifiedTopology: true, //Defauct setting mongoDB
     }
 );
 
-const Book = mongoose.model("Book", {
+const Book = mongoose.model("Book", { // Mongo not call table but called collections instead
     id: {
         type: Number,
         unique: true, // Ensure uniqueness of the "id" field
@@ -35,7 +35,7 @@ app.post("/books", async (req, res) => {
     try {
         // Get the last book record to determine the next ID
         const lastBook = await Book.findOne().sort({ id: -1});
-        const nextID = lastBook ? lastBook.id + 1 : 1;
+        const nextID = lastBook ? lastBook.id + 1 : 1; //ternary operation of JS
 
         // Create a new book with the next ID
         const book = new Book ({
@@ -53,7 +53,7 @@ app.post("/books", async (req, res) => {
 // Read all
 app.get("/books", async (req, res) => {
     try {
-        const books = await Book.find();
+        const books = await Book.find(); //find all
         res.send(books);
     } catch (error) {
         res.status(500).send(error);
@@ -63,7 +63,7 @@ app.get("/books", async (req, res) => {
 // Read one
 app.get("/books/:id", async (req, res) => {
     try {
-        const book = await Book.findOne({id:req.params.id});
+        const book = await Book.findOne({id:req.params.id}); // find one
         res.send(book);
     } catch (error){
         res.status(500).send(error);
