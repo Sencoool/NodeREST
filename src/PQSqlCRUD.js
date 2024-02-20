@@ -13,7 +13,7 @@ app.use(express.json());
 
 // set db url
 
-const dbUrl = 'postgres://webadmin:GPVoif99220@node58302-jiramet-noderest.proen.app.ruk-com.cloud:11759/books'
+const dbUrl = 'postgres://webadmin:GPVoif99220@node58302-jiramet-noderest.proen.app.ruk-com.cloud:5432/Books'
 
 // create a connextion to the database
 

@@ -2,6 +2,7 @@
 // npm install express mongoose body-parser
 // Run this file with node MongoDBREST.js
 // Test with Postman
+// NoSQL No table Relation
 
 const express = require("express");
 const mongoose = require("mongoose");
