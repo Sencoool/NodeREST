@@ -10,7 +10,7 @@ const bodyParser = require("body-parser")
 
 // Database connection
 mongoose.connect(
-    "mongodb://admin:DAEymy19863@node58301-jiramet-noderest.proen.app.ruk-com.cloud", // local need port num clout don't need
+    "mongodb://admin:DAEymy19863@node58301-jiramet-noderest.proen.app.ruk-com.cloud:11784",
     {
         useNewUrlParser: true,
         useUnifiedTopology: true, //Defauct setting mongoDB
@@ -93,7 +93,7 @@ app.delete("/books/:id", async (req, res) => {
 });
 
 // Start the server
-const PORT = process.env.PORT || 3000;
+const PORT = PerformanceObserverEntryList.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server started at http://localhost:${PORT}`);
 })

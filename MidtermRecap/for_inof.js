@@ -1,4 +1,4 @@
-let arr = [1,2,3,5,664,324]
+    let arr = [1,2,3,5,664,324]
 
 console.log("for in");
 
