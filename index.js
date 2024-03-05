@@ -7,6 +7,8 @@
 const express = require("express");
 const mongoose = require("mongoose"); //object use to access mongoDB
 const bodyParser = require("body-parser");
+const cors = require("cors");
+const app = express();
 
 // Database connection
 mongoose.connect(
@@ -28,8 +30,8 @@ const Book = mongoose.model("Book", {
   author: String,
 });
 
-const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 // Create
 app.post("/books", async (req, res) => {
